@@ -20,12 +20,14 @@ function authenticate($id, $password) {
     return false;
 }
 
-function registerUser($id, $name, $password, $role) {
+function registerUser($name, $password, $role) {
     global $mysqli;
-    $hashed_password = password_hash($password, PASSWORD_BCRYPT);
-    $stmt = $mysqli->prepare("INSERT INTO users (user_id, name, password, role) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("isss", $id, $name, $hashed_password, $role);
+    $hashed_password = password_hash($password, PASSWORD_BCRYPT); // Secure password hashing
+
+    $stmt = $mysqli->prepare("INSERT INTO users (name, password, role) VALUES (?, ?, ?)");
+    $stmt->bind_param("sss", $name, $hashed_password, $role);
     $stmt->execute();
     $stmt->close();
 }
+
 ?>
